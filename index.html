@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>爆速英単語｜英検5〜3級対応 小・中学生向け英語学習アプリ</title>
+  <meta name="description" content="ライバルとの対戦バトルで英単語が楽しく身につく！英検5級・4級・3級対応。苦手くん・普通くん・チーターを倒して英検合格を目指そう。">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, 'Hiragino Sans', 'Yu Gothic UI', sans-serif;
+      background: #fff;
+      color: #1a2e1a;
+      line-height: 1.7;
+    }
+
+    /* ===== パンくず ===== */
+    .breadcrumb {
+      padding: 12px 24px;
+      font-size: 13px;
+      color: #888;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .breadcrumb a { color: #3cb944; text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(160deg, #2a8f30 0%, #3cb944 40%, #5dd464 100%);
+      padding: 48px 24px 44px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 50%);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.92);
+      color: #2a8f30;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 5px 18px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+      letter-spacing: 0.04em;
+    }
+
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1.35;
+      color: #fff;
+      margin-bottom: 14px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      letter-spacing: -0.01em;
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 30px;
+      line-height: 1.7;
+    }
+
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #111;
+      color: #fff;
+      text-decoration: none;
+      padding: 15px 32px;
+      border-radius: 16px;
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 36px;
+      transition: opacity 0.2s;
+      position: relative;
+    }
+    .dl-btn:hover { opacity: 0.85; }
+
+    .hero-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      margin: 0 auto 20px;
+      display: block;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+
+    .screenshots {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .screenshots img {
+      width: 145px;
+      border-radius: 18px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.22);
+    }
+
+    /* ===== PROBLEM ===== */
+    .problem {
+      padding: 56px 24px;
+      background: #fffbf0;
+    }
+    .section-label {
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 900;
+      text-align: center;
+      color: #1a2e1a;
+      margin-bottom: 28px;
+      line-height: 1.45;
+    }
+    .problem-list {
+      list-style: none;
+      max-width: 460px;
+      margin: 0 auto 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .problem-list li {
+      padding: 14px 18px;
+      background: #fff;
+      border-left: 4px solid #f5a623;
+      border-radius: 10px;
+      font-size: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .problem-answer {
+      background: #3cb944;
+      color: #fff;
+      border-radius: 16px;
+      padding: 20px 24px;
+      max-width: 460px;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 17px;
+      font-weight: bold;
+      line-height: 1.6;
+    }
+
+    /* ===== RIVAL BATTLE ===== */
+    .rival {
+      padding: 56px 24px;
+      background: linear-gradient(160deg, #1a3a1a 0%, #2a5a2a 100%);
+      color: #fff;
+      text-align: center;
+    }
+    .rival-label {
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.8);
+      font-size: 12px;
+      padding: 4px 16px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      letter-spacing: 0.08em;
+    }
+    .rival h2 {
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1.35;
+      margin-bottom: 16px;
+      color: #a8f0a0;
+    }
+    .rival p {
+      font-size: 15px;
+      color: #c8e8c0;
+      max-width: 480px;
+      margin: 0 auto 32px;
+      line-height: 1.85;
+    }
+    .rival-cards {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+    .rival-card {
+      flex: 1;
+      min-width: 120px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 16px;
+      padding: 18px 12px;
+    }
+    .rival-card.cheetah {
+      background: rgba(245,166,35,0.18);
+      border-color: rgba(245,166,35,0.4);
+    }
+    .rival-emoji { font-size: 36px; margin-bottom: 8px; display: block; }
+    .rival-name { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 4px; }
+    .rival-desc { font-size: 12px; color: rgba(255,255,255,0.65); }
+    .rival-badge {
+      display: inline-block;
+      background: #f5a623;
+      color: #1a2e1a;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-top: 6px;
+    }
+
+    /* ===== FEATURES ===== */
+    .features {
+      padding: 56px 24px;
+      background: #f0faf0;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 22px 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .feature-icon { font-size: 32px; margin-bottom: 10px; display: block; }
+    .feature-card h3 { font-size: 16px; font-weight: bold; color: #1a2e1a; margin-bottom: 6px; }
+    .feature-card p { font-size: 14px; color: #555; line-height: 1.7; }
+
+    /* ===== HOW TO ===== */
+    .howto {
+      padding: 56px 24px;
+      background: #fff;
+    }
+    .steps {
+      max-width: 460px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .step { display: flex; gap: 16px; align-items: flex-start; }
+    .step-num {
+      width: 42px; height: 42px; min-width: 42px;
+      background: linear-gradient(135deg, #3cb944, #2a8f30);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900; color: #fff;
+    }
+    .step-content h3 { font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+    .step-content p { font-size: 14px; color: #555; line-height: 1.7; }
+
+    /* ===== CONFETTI HIGHLIGHT ===== */
+    .confetti-section {
+      padding: 48px 24px;
+      background: linear-gradient(135deg, #eafff0 0%, #fff9e0 100%);
+      text-align: center;
+    }
+    .confetti-section h2 {
+      font-size: 22px; font-weight: 900; color: #1a2e1a;
+      margin-bottom: 12px; line-height: 1.4;
+    }
+    .confetti-section p { font-size: 15px; color: #444; margin-bottom: 24px; max-width: 420px; margin-left: auto; margin-right: auto; }
+    .confetti-section img { width: 155px; border-radius: 20px; box-shadow: 0 6px 24px rgba(0,0,0,0.13); }
+
+    /* ===== PREMIUM ===== */
+    .premium {
+      padding: 56px 24px;
+      background: #1a2e1a;
+      color: #fff;
+      text-align: center;
+    }
+    .premium .section-title { color: #a8f0a0; }
+    .premium p { font-size: 15px; color: #c0dcc0; max-width: 440px; margin: 0 auto 24px; line-height: 1.8; }
+    .premium-list {
+      list-style: none;
+      max-width: 380px;
+      margin: 0 auto 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .premium-list li {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 15px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .premium-list .icon { font-size: 22px; flex-shrink: 0; }
+    .premium-note { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+    /* ===== CTA ===== */
+    .cta {
+      padding: 64px 24px;
+      background: linear-gradient(160deg, #2a8f30 0%, #3cb944 60%, #5dd464 100%);
+      text-align: center;
+    }
+    .cta h2 { font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 12px; line-height: 1.4; text-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .cta p { font-size: 15px; color: rgba(255,255,255,0.9); margin-bottom: 30px; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #111;
+      color: #888;
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 13px;
+      line-height: 2;
+    }
+    footer a { color: #3cb944; text-decoration: none; margin: 0 10px; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (min-width: 560px) {
+      .hero h1 { font-size: 36px; }
+      .screenshots img { width: 175px; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .rival h2 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- パンくず -->
+<nav class="breadcrumb">
+  <a href="https://chimasaki31-lab.github.io/">MC Labs</a> &rsaquo; 爆速英単語
+</nav>
+
+<!-- ヒーロー -->
+<section class="hero">
+  <div class="hero-badge">📚 英検5級・4級・3級対応 | 小・中学生向け</div>
+  <img src="app_icon.png" alt="爆速英単語アイコン" class="hero-icon">
+  <h1>単語の勉強、<br>ゲームで続けてみませんか？</h1>
+  <p class="hero-sub">ライバルに勝つ悔しさと達成感が、<br>子どものやる気に自然と火をつける英単語アプリ</p>
+  <a href="https://apps.apple.com/jp/app/%E7%88%86%E9%80%9F%E8%8B%B1%E5%8D%98%E8%AA%9E-%E4%B8%AD%E5%AD%A6%E9%AB%98%E6%A0%A1%E3%81%AE%E8%8B%B1%E8%AA%9E%E5%AD%A6%E7%BF%92%E3%81%A8%E3%83%86%E3%82%B9%E3%83%88%E5%AF%BE%E7%AD%96/id6764725300" class="dl-btn">
+    <svg width="20" height="20" viewBox="0 0 814 1000" fill="white"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.3 134.4-316.7 266.8-316.7 99.8 0 162.6 64.8 212.7 64.8 46.2 0 121.2-68.8 228.5-68.8zm-88-174c43.8-51.7 74.6-123.5 74.6-195.3 0-10.3-.6-20.7-2.6-29.2-70.7 2.6-154.7 47.1-204.7 107.2-38.4 44.4-75.9 116.2-75.9 189 0 11.6 1.9 23.2 2.6 26.9 4.5.6 11.6 1.9 18.7 1.9 63.5 0 143.9-42.5 187.3-100.5z"/></svg>
+    App Storeで無料ダウンロード
+  </a>
+  <div class="screenshots">
+    <img src="screenshot1.png" alt="ホーム画面 - 英検合格を目指そう">
+    <img src="screenshot2.png" alt="バトル画面 - ライバルと対戦">
+    <img src="screenshot3.png" alt="クリア画面 - 紙吹雪で達成感">
+  </div>
+</section>
+
+<!-- 課題提起 -->
+<section class="problem">
+  <p class="section-label">PROBLEM</p>
+  <h2 class="section-title">こんなこと、ありませんか？</h2>
+  <ul class="problem-list">
+    <li>📖 単語帳を買ってもすぐ飽きて、本棚に眠っている</li>
+    <li>🎮 ゲームは何時間でもできるのに、勉強は5分で嫌がる</li>
+    <li>😰 英検の単語量が多すぎて、どこから手をつければいいか…</li>
+    <li>😤 「勉強しなさい」と言うたびに親子でケンカになる</li>
+  </ul>
+  <div class="problem-answer">
+    爆速英単語が<br>まとめて解決します。
+  </div>
+</section>
+
+<!-- ライバル対戦セクション -->
+<section class="rival">
+  <div class="rival-label">このアプリの一番の特長</div>
+  <h2>ライバルに勝ちたい！<br>その気持ちが勉強を続かせる</h2>
+  <p>
+    暗記カードのように「ただ覚える」のではなく、<br>
+    アプリ内のライバルキャラクターとリアルタイムで対戦しながら英単語を学べます。<br>
+    「得意くん（チーター）に勝ちたい！」という悔しさが、<br>自分からスマホを手に取る理由になります。
+  </p>
+  <div class="rival-cards">
+    <div class="rival-card">
+      <span class="rival-emoji">🐢</span>
+      <div class="rival-name">苦手くん</div>
+      <div class="rival-desc">まずここから始めよう</div>
+    </div>
+    <div class="rival-card">
+      <span class="rival-emoji">🐇</span>
+      <div class="rival-name">普通くん</div>
+      <div class="rival-desc">慣れてきたら挑戦</div>
+    </div>
+    <div class="rival-card cheetah">
+      <span class="rival-emoji">🐆</span>
+      <div class="rival-name">得意くん</div>
+      <div class="rival-desc">最強ライバル</div>
+      <div class="rival-badge">チーター</div>
+    </div>
+  </div>
+</section>
+
+<!-- 機能紹介 -->
+<section class="features">
+  <p class="section-label">FEATURES</p>
+  <h2 class="section-title">アプリでできること</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🏆</span>
+      <h3>英検5級〜3級に完全対応</h3>
+      <p>今の実力や目標に合わせてレベルを選択。小学生から中学生まで、段階的にステップアップできます。</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <h3>スピード対戦で飽きない</h3>
+      <p>4択問題をライバルとのタイムバトル形式で出題。コンボが続くと興奮度もアップします。</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔢</span>
+      <h3>10問・50問・100問から選択</h3>
+      <p>忙しい日は10問だけ、時間がある日は100問に挑戦。毎日無理なく続けられます。</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📊</span>
+      <h3>過去20回分の対戦履歴</h3>
+      <p>勝ち負けの記録とスコアを自動保存。成長が目に見えるから、続けるモチベーションになります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 使い方 -->
+<section class="howto">
+  <p class="section-label">HOW TO USE</p>
+  <h2 class="section-title">使い方は3ステップ</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>レベルとライバルを選ぶ</h3>
+        <p>英検5〜3級の中からレベルを選び、対戦するライバル（苦手くん・普通くん・得意くん）を選択します。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>ライバルとバトル開始！</h3>
+        <p>英単語の意味を4択でスピード回答。コンボを続けてライバルに差をつけましょう。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>結果を確認して次のステージへ</h3>
+        <p>勝てたら次のライバルに挑戦。負けたら悔しさをバネにリベンジ。自然と繰り返したくなります。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 紙吹雪ハイライト -->
+<section class="confetti-section">
+  <h2>全問正解で<br>画面いっぱいの紙吹雪！</h2>
+  <p>「できた！」の成功体験が積み重なるほど、子どもは自分から勉強するようになります。</p>
+  <img src="screenshot3.png" alt="全問正解で紙吹雪演出">
+</section>
+
+<!-- プレミアム -->
+<section class="premium">
+  <p class="section-label" style="color: #a8f0a0;">PREMIUM</p>
+  <h2 class="section-title">買い切りプランで<br>広告なしの最高の学習環境へ</h2>
+  <p>子ども向けアプリで邪魔になりがちな広告を完全非表示。ドリルとバトルだけに100%集中できます。</p>
+  <ul class="premium-list">
+    <li><span class="icon">🚫</span><div><strong>広告を完全非表示</strong><div class="premium-note">学習の集中を妨げる広告ゼロ</div></div></li>
+    <li><span class="icon">🐆</span><div><strong>最強ライバル「チーター」に挑戦可能</strong><div class="premium-note">無料版は広告視聴でも解放できます</div></div></li>
+    <li><span class="icon">✅</span><div><strong>買い切りで追加課金なし</strong><div class="premium-note">一度購入すれば永続利用</div></div></li>
+  </ul>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>さあ、ライバルに<br>挑戦してみよう！</h2>
+  <p>まずは無料でダウンロード。苦手くんとのバトルから始めてみてください。</p>
+  <a href="https://apps.apple.com/jp/app/%E7%88%86%E9%80%9F%E8%8B%B1%E5%8D%98%E8%AA%9E-%E4%B8%AD%E5%AD%A6%E9%AB%98%E6%A0%A1%E3%81%AE%E8%8B%B1%E8%AA%9E%E5%AD%A6%E7%BF%92%E3%81%A8%E3%83%86%E3%82%B9%E3%83%88%E5%AF%BE%E7%AD%96/id6764725300" class="dl-btn">
+    <svg width="20" height="20" viewBox="0 0 814 1000" fill="white"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.3 134.4-316.7 266.8-316.7 99.8 0 162.6 64.8 212.7 64.8 46.2 0 121.2-68.8 228.5-68.8zm-88-174c43.8-51.7 74.6-123.5 74.6-195.3 0-10.3-.6-20.7-2.6-29.2-70.7 2.6-154.7 47.1-204.7 107.2-38.4 44.4-75.9 116.2-75.9 189 0 11.6 1.9 23.2 2.6 26.9 4.5.6 11.6 1.9 18.7 1.9 63.5 0 143.9-42.5 187.3-100.5z"/></svg>
+    App Storeで無料ダウンロード
+  </a>
+</section>
+
+<!-- フッター -->
+<footer>
+  <p>爆速英単語 - 中学高校の英語学習とテスト対策</p>
+  <p style="margin-top: 12px;">
+    <a href="https://chimasaki31-lab.github.io/">MC Labs トップへ</a>
+    <a href="https://chimasaki31-lab.github.io/ketsuatsu-ai/">血圧手帳AI</a>
+    <a href="https://chimasaki31-lab.github.io/bakusoku-keisan-drill-lp/">爆速計算ドリル</a>
+    <a href="mailto:chimasaki31@gmail.com">お問い合わせ</a>
+  </p>
+  <p style="margin-top: 12px;">© 2026 MC Labs. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
